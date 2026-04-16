@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le pays et ses habitants</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --jw-blue: #2f4258;
+      --jw-accent: #3f78b5;
+      --jw-bg: #f3f4f6;
+      --jw-border: #eef1f4;
+      --jw-text: #1f2933;
+      --jw-muted: #6b7280;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--jw-bg);
+      color: var(--jw-text);
+    }
+
+    .topbar {
+      background: var(--jw-blue);
+      color: white;
+      padding: 14px 28px;
+    }
+
+    .topbar-inner {
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .hero {
+      position: relative;
+      height: 320px;
+      background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: end;
+      color: white;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,30,40,0.6);
+    }
+
+    .hero-inner {
+      position: relative;
+      padding: 30px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 42px;
+    }
+
+    .page {
+      max-width: 1500px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: #233446;
+      border-left: 3px solid transparent;
+      opacity: 0.7;
+    }
+
+    .sidebar a.active {
+      border-left: 3px solid var(--jw-accent);
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    .section {
+      background: white;
+      padding: 30px;
+      border: 1px solid var(--jw-border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .card {
+      background: #f8fafc;
+      padding: 15px;
+      border: 1px solid var(--jw-border);
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .photo {
+      height: 160px;
+      background: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    @media(max-width:900px){
+      .page { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>Assemblée internationale</strong>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <h1>Le pays et ses habitants</h1>
+  </div>
+</header>
+
+<main class="page">
+
+  <nav class="sidebar">
+    <a href="bienvenue.html">Bienvenue</a>
+    <a href="oeuvre.html">L’œuvre du Royaume</a>
+    <a href="histoire.html">Notre histoire</a>
+    <a href="pays.html" class="active">Le pays et ses habitants</a>
+  </nav>
+
+  <div>
+
+    <section class="section">
+      <h2>Découvrir La Réunion</h2>
+
+      <div class="grid">
+
+        <div class="card">
+          <h3>Géographie</h3>
+          <p>
+            La Réunion est une île volcanique caractérisée par ses cirques, ses remparts et son littoral.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Climat</h3>
+          <p>
+            Le climat est tropical, avec des variations selon l’altitude et les régions.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Population et langues</h3>
+          <p>
+            La population est diverse et multiculturelle, avec plusieurs langues utilisées au quotidien.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Culture et convivialité</h3>
+          <p>
+            L’accueil chaleureux et le sens du partage font partie des caractéristiques marquantes de l’île.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+      <h2>Paysages et ambiance</h2>
+
+      <div class="gallery">
+        <div class="photo">Paysage 1</div>
+        <div class="photo">Paysage 2</div>
+        <div class="photo">Paysage 3</div>
+        <div class="photo">Paysage 4</div>
+        <div class="photo">Paysage 5</div>
+        <div class="photo">Paysage 6</div>
+      </div>
+
+      <p style="margin-top:20px;">
+        Ces images permettront d’illustrer la diversité des paysages et l’atmosphère unique de La Réunion.
+      </p>
+
+    </section>
+
+  </div>
+
+</main>
+
+</body>
+</html>

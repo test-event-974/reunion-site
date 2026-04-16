@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notre histoire</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --jw-blue: #2f4258;
+      --jw-accent: #3f78b5;
+      --jw-bg: #f3f4f6;
+      --jw-border: #eef1f4;
+      --jw-text: #1f2933;
+      --jw-muted: #6b7280;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--jw-bg);
+      color: var(--jw-text);
+    }
+
+    .topbar {
+      background: var(--jw-blue);
+      color: white;
+      padding: 14px 28px;
+    }
+
+    .topbar-inner {
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .hero {
+      position: relative;
+      height: 300px;
+      background-image: url("https://images.unsplash.com/photo-1469474968028-56623f02e42e");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: end;
+      color: white;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,30,40,0.6);
+    }
+
+    .hero-inner {
+      position: relative;
+      padding: 30px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 42px;
+    }
+
+    .page {
+      max-width: 1500px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: #233446;
+      border-left: 3px solid transparent;
+      opacity: 0.7;
+    }
+
+    .sidebar a.active {
+      border-left: 3px solid var(--jw-accent);
+      font-weight: bold;
+      opacity: 1;
+    }
+
+    .section {
+      background: white;
+      padding: 30px;
+      border: 1px solid var(--jw-border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .timeline {
+      border-left: 3px solid var(--jw-accent);
+      padding-left: 20px;
+    }
+
+    .event {
+      margin-bottom: 25px;
+    }
+
+    .event h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .event p {
+      margin-top: 5px;
+      color: #444;
+    }
+
+    @media(max-width:900px){
+      .page { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>Assemblée internationale</strong>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <h1>Notre histoire</h1>
+  </div>
+</header>
+
+<main class="page">
+
+  <nav class="sidebar">
+    <a href="bienvenue.html">Bienvenue</a>
+    <a href="oeuvre.html">L’œuvre du Royaume</a>
+    <a href="histoire.html" class="active">Notre histoire</a>
+    <a href="pays.html">Le pays et ses habitants</a>
+  </nav>
+
+  <div>
+
+    <section class="section">
+      <h2>Repères historiques</h2>
+
+      <div class="timeline">
+
+        <div class="event">
+          <h3>Débuts</h3>
+          <p>
+            Présenter ici l’arrivée du message biblique à La Réunion et les premières étapes de développement.
+          </p>
+        </div>
+
+        <div class="event">
+          <h3>Développement</h3>
+          <p>
+            Décrire ici les progrès réalisés, les premières assemblées, et les étapes marquantes de croissance.
+          </p>
+        </div>
+
+        <div class="event">
+          <h3>Période récente</h3>
+          <p>
+            Ajouter ici les développements actuels, les progrès récents et les données validées.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+</body>
+</html>

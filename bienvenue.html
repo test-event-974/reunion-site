@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bienvenue</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #1f2933;
+}
+
+.hero {
+  min-height: 320px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: end;
+  color: white;
+  padding: 30px;
+  background-color: #2f4258;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 40px;
+  max-width: 900px;
+}
+
+.page {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+.section {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.block {
+  margin-bottom: 50px;
+}
+
+.block h2 {
+  margin-bottom: 10px;
+}
+
+.block p {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.block img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  margin-top: 15px;
+  border-radius: 6px;
+}
+
+.status {
+  max-width: 1100px;
+  margin: 20px auto 0;
+  padding: 0 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.error {
+  color: #b91c1c;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero" id="hero">
+  <h1 id="hero_title">Chargement…</h1>
+</header>
+
+<div class="status" id="status">Lecture du Google Sheets…</div>
+
+<div class="page">
+  <div class="section" id="content"></div>
+</div>
+
+<script>
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?gid=0&single=true&output=csv";
+const PAGE = "bienvenue";
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const nextChar = text[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && nextChar === '"') {
+        cell += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (char === ',' && !inQuotes) {
+      row.push(cell);
+      cell = "";
+    } else if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (char === '\r' && nextChar === '\n') {
+        i++;
+      }
+
+      row.push(cell);
+      cell = "";
+
+      const hasData = row.some(value => value !== "");
+      if (hasData) {
+        rows.push(row);
+      }
+      row = [];
+    } else {
+      cell += char;
+    }
+  }
+
+  if (cell.length > 0 || row.length > 0) {
+    row.push(cell);
+    rows.push(row);
+  }
+
+  return rows;
+}
+
+function rowsToObjects(rows) {
+  if (!rows.length) return [];
+
+  const headers = rows[0].map(h => h.trim());
+
+  return rows.slice(1).map(row => {
+    const obj = {};
+    headers.forEach((header, index) => {
+      obj[header] = (row[index] || "").trim();
+    });
+    return obj;
+  });
+}
+
+async function loadPage() {
+  const status = document.getElementById("status");
+  const content = document.getElementById("content");
+  const hero = document.getElementById("hero");
+  const heroTitleEl = document.getElementById("hero_title");
+
+  try {
+    const response = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Erreur HTTP " + response.status);
+    }
+
+    const csvText = await response.text();
+    const rows = parseCSV(csvText);
+    const data = rowsToObjects(rows);
+
+    const pageRows = data.filter(item => item.page === PAGE);
+
+    if (!pageRows.length) {
+      throw new Error("Aucune ligne trouvée pour la page 'bienvenue'. Vérifie la colonne page dans Google Sheets.");
+    }
+
+    const blocks = {};
+    let heroTitle = "";
+    let heroImage = "";
+
+    pageRows.forEach(item => {
+      const field = item.field;
+      const value = item.value || "";
+
+      if (field === "hero_title") heroTitle = value;
+      if (field === "hero_image") heroImage = value;
+
+      const match = field.match(/^block_(\d+)_(title|text|image)$/);
+      if (match) {
+        const index = match[1];
+        const type = match[2];
+
+        if (!blocks[index]) {
+          blocks[index] = {};
+        }
+
+        blocks[index][type] = value;
+      }
+    });
+
+    heroTitleEl.textContent = heroTitle || "Bienvenue";
+
+    if (heroImage) {
+      hero.style.backgroundImage = `url("${heroImage}")`;
+    }
+
+    content.innerHTML = "";
+
+    Object.keys(blocks)
+      .sort((a, b) => Number(a) - Number(b))
+      .forEach(index => {
+        const block = blocks[index];
+        const div = document.createElement("div");
+        div.className = "block";
+
+        if (block.title) {
+          const h2 = document.createElement("h2");
+          h2.textContent = block.title;
+          div.appendChild(h2);
+        }
+
+        if (block.text) {
+          const normalizedText = block.text.replace(/\\n/g, "\n");
+          normalizedText
+            .split(/\n\s*\n/)
+            .map(p => p.trim())
+            .filter(Boolean)
+            .forEach(paragraphText => {
+              const p = document.createElement("p");
+              p.textContent = paragraphText;
+              div.appendChild(p);
+            });
+        }
+
+        if (block.image) {
+          const img = document.createElement("img");
+          img.src = block.image;
+          img.alt = block.title || "";
+          div.appendChild(img);
+        }
+
+        content.appendChild(div);
+      });
+
+    status.textContent = "Contenu chargé avec succès depuis Google Sheets.";
+  } catch (error) {
+    console.error(error);
+    status.textContent = "Erreur : " + error.message;
+    status.classList.add("error");
+    heroTitleEl.textContent = "Erreur de chargement";
+  }
+}
+
+loadPage();
+</script>
+
+</body>
+</html>
