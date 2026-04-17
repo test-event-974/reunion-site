@@ -191,7 +191,7 @@
     }
 
     .article {
-      padding: 72px 8% 40px;
+      padding: 72px 8% 20px;
     }
 
     h1 {
@@ -209,6 +209,40 @@
       margin: 0 0 18px;
       color: #3f3f3f;
       font-weight: 400;
+    }
+
+    .gallery {
+      padding: 10px 8% 40px;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .gallery-item {
+      background: #fff;
+      border: 1px solid #e2e2e2;
+    }
+
+    .gallery-image {
+      width: 100%;
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #d8d8d8;
+      display: block;
+    }
+
+    .gallery-caption {
+      font-size: 14px;
+      line-height: 1.45;
+      color: #555;
+      padding: 12px 14px 14px;
+      border-top: 1px solid #ededed;
+      min-height: 64px;
     }
 
     .signature {
@@ -240,6 +274,7 @@
       .city { font-size: 18px; }
       .hero-media { height: 420px; }
       .article { padding-top: 66px; }
+      .gallery-image { height: 190px; }
     }
 
     @media (max-width: 760px) {
@@ -297,7 +332,20 @@
       }
 
       .article {
-        padding: 48px 16px 28px;
+        padding: 48px 16px 12px;
+      }
+
+      .gallery {
+        padding: 10px 16px 28px;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .gallery-image {
+        height: 220px;
       }
 
       h1 {
@@ -320,6 +368,7 @@
     @media (max-width: 420px) {
       .brand-text { font-size: 17px; }
       .hero-media { height: 220px; }
+      .gallery-image { height: 190px; }
       h1 { font-size: 25px; }
       p, .signature { font-size: 15px; }
     }
@@ -410,6 +459,16 @@
       return url && url.trim() ? url.trim() : FALLBACK_HERO_IMAGE;
     }
 
+    function renderGalleryItem(url, caption) {
+      if (!url) return "";
+      return `
+        <article class="gallery-item">
+          <div class="gallery-image" style="background-image:url('${escapeAttr(safeImage(url))}');"></div>
+          <div class="gallery-caption">${escapeHtml(caption || "")}</div>
+        </article>
+      `;
+    }
+
     function render(f) {
       const heroImage = safeImage(f.hero_image);
       const heroCaption = escapeHtml(f.hero_caption || f.hero_subtitle || "");
@@ -421,6 +480,12 @@
       const closingText = escapeHtml(f.closing_text || "");
       const signature = escapeHtml(f.signature || "");
       const signature2 = escapeHtml(f.signature_2 || "");
+
+      const galleryHtml = [
+        renderGalleryItem(f.image_1_url, f.image_1_caption),
+        renderGalleryItem(f.image_2_url, f.image_2_caption),
+        renderGalleryItem(f.image_3_url, f.image_3_caption)
+      ].join("");
 
       return `
         <header>
@@ -474,6 +539,14 @@
             ${signature2}
           </div>
         </section>
+
+        ${galleryHtml ? `
+          <section class="gallery">
+            <div class="gallery-grid">
+              ${galleryHtml}
+            </div>
+          </section>
+        ` : ""}
       `;
     }
 
