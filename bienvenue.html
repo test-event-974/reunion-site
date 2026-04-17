@@ -156,22 +156,26 @@
     }
 
     .signature {
-      white-space: pre-line;
       font-weight: 700;
       color: var(--accent-dark);
       margin-top: 18px;
+      line-height: 1.8;
     }
 
     .loading,
     .error {
       padding: 56px 24px;
       text-align: center;
-      color: var(--muted);
       font-size: 1.05rem;
+    }
+
+    .loading {
+      color: var(--muted);
     }
 
     .error {
       color: #b91c1c;
+      white-space: pre-line;
     }
 
     @media (max-width: 900px) {
@@ -199,7 +203,24 @@
   </div>
 
   <script>
-    const SHEET_CSV_URL = "COLLE_ICI_L_URL_CSV_DE_TA_GOOGLE_SHEET";
+    const SHEET_CSV_URL = "COLLE_ICI_TON_LIEN_CSV_GOOGLE_SHEETS";
+
+    function normalizeGoogleSheetUrl(url) {
+      if (!url) return url;
+
+      if (url.includes("/pub?gid=") || url.includes("output=csv") || url.includes("/export?format=csv")) {
+        return url;
+      }
+
+      const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (!match) return url;
+
+      const sheetId = match[1];
+      const gidMatch = url.match(/[?&]gid=([0-9]+)/);
+      const gid = gidMatch ? gidMatch[1] : "0";
+
+      return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
+    }
 
     function parseCSV(csvText) {
       const rows = [];
@@ -239,7 +260,7 @@
 
       if (rows.length === 0) return [];
 
-      const headers = rows[0].map(h => h.trim());
+      const headers = rows[0].map(h => (h || "").trim());
       return rows.slice(1).map(r => {
         const obj = {};
         headers.forEach((h, idx) => {
@@ -249,19 +270,6 @@
       });
     }
 
-    function toFieldMap(data, pageName) {
-      return data
-        .filter(item => item.page === pageName)
-        .reduce((acc, item) => {
-          acc[item.field] = item.value || "";
-          return acc;
-        }, {});
-    }
-
-    function nl2br(text) {
-      return (text || "").replace(/\n/g, "<br>");
-    }
-
     function escapeHtml(str) {
       return (str || "")
         .replace(/&/g, "&amp;")
@@ -269,6 +277,15 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+    }
+
+    function toFieldMap(data, pageName) {
+      return data
+        .filter(item => item.page === pageName && item.field && item.field !== "field")
+        .reduce((acc, item) => {
+          acc[item.field] = item.value || "";
+          return acc;
+        }, {});
     }
 
     function renderPage(f) {
@@ -317,7 +334,10 @@
             <div class="card closing">
               <h2>${escapeHtml(f.closing_title || "")}</h2>
               <p>${escapeHtml(f.closing_text || "")}</p>
-              <div class="signature">${nl2br(escapeHtml(f.signature || ""))}</div>
+              <div class="signature">
+                ${escapeHtml(f.signature || "")}<br>
+                ${escapeHtml(f.signature_2 || "")}
+              </div>
             </div>
           </div>
         </section>
@@ -326,17 +346,20 @@
 
     async function loadPage() {
       const app = document.getElementById("app");
+      const finalUrl = normalizeGoogleSheetUrl(SHEET_CSV_URL);
 
       try {
-        const response = await fetch(SHEET_CSV_URL);
-        if (!response.ok) throw new Error("Impossible de charger la Google Sheet.");
+        const response = await fetch(finalUrl);
+        if (!response.ok) {
+          throw new Error(`Impossible de charger la Google Sheet.\nHTTP ${response.status}\nURL : ${finalUrl}`);
+        }
 
         const csvText = await response.text();
         const data = parseCSV(csvText);
         const fields = toFieldMap(data, "bienvenue");
 
         if (!Object.keys(fields).length) {
-          throw new Error("Aucune donnée trouvée pour la page 'bienvenue'.");
+          throw new Error("Aucune donnée trouvée pour la page 'bienvenue'. Vérifie la colonne page et l’en-tête.");
         }
 
         app.innerHTML = renderPage(fields);
