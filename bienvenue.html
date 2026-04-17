@@ -21,9 +21,7 @@
       --logo-green: #6f9d31;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -139,10 +137,8 @@
       padding: 14px 26px;
       font-size: 17px;
       text-transform: uppercase;
-    }
-
-    .nav-main a {
-      opacity: 0.96;
+      overflow-x: auto;
+      white-space: nowrap;
     }
 
     .nav-tabs {
@@ -150,7 +146,7 @@
       border-bottom: 1px solid var(--line);
       display: flex;
       gap: 34px;
-      padding: 0 12px 0 12px;
+      padding: 0 12px;
       overflow-x: auto;
       white-space: nowrap;
     }
@@ -201,13 +197,8 @@
       user-select: none;
     }
 
-    .hero-arrow.left {
-      left: 0;
-    }
-
-    .hero-arrow.right {
-      right: 0;
-    }
+    .hero-arrow.left { left: 0; }
+    .hero-arrow.right { right: 0; }
 
     .hero-caption {
       position: absolute;
@@ -321,121 +312,77 @@
       color: var(--brown);
     }
 
+    .loading,
+    .error {
+      padding: 60px 20px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .loading { color: #666; }
+    .error {
+      color: #a12727;
+      white-space: pre-line;
+    }
+
     @media (max-width: 1100px) {
-      .brand-left {
-        min-width: auto;
-      }
-
-      .brand-text {
-        font-size: 21px;
-      }
-
-      .location-title .country {
-        font-size: 23px;
-      }
-
-      .location-title .city {
-        font-size: 19px;
-      }
-
-      .hero-image {
-        height: 430px;
-      }
-
-      .article-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .article-side {
-        justify-content: flex-start;
-      }
+      .brand-left { min-width: auto; }
+      .brand-text { font-size: 21px; }
+      .location-title .country { font-size: 23px; }
+      .location-title .city { font-size: 19px; }
+      .hero-image { height: 430px; }
+      .article-grid { grid-template-columns: 1fr; }
+      .article-side { justify-content: flex-start; }
     }
 
     @media (max-width: 760px) {
-      .topbar {
-        flex-direction: column;
-      }
-
-      .brand-left {
-        min-width: 100%;
-      }
-
+      .topbar { flex-direction: column; }
+      .brand-left { min-width: 100%; }
       .location-box {
         padding: 14px 16px;
         flex-direction: column;
         align-items: flex-start;
       }
-
       .nav-main {
         gap: 18px;
         padding: 12px 16px;
         font-size: 15px;
-        overflow-x: auto;
-        white-space: nowrap;
       }
-
       .nav-tabs {
         gap: 22px;
         padding: 0 16px;
       }
-
-      .nav-tabs a {
-        font-size: 15px;
-      }
-
-      .content-wrap {
-        padding: 0 0 36px;
-      }
-
-      .hero-image {
-        height: 300px;
-      }
-
+      .nav-tabs a { font-size: 15px; }
+      .content-wrap { padding: 0 0 36px; }
+      .hero-image { height: 300px; }
       .hero-arrow {
         width: 42px;
         height: 82px;
         font-size: 42px;
       }
-
       .hero-caption {
         left: 12px;
         right: 12px;
         bottom: -22px;
         padding: 10px 14px;
       }
-
       .hero-caption-badge {
         width: 46px;
         height: 46px;
       }
-
-      .hero-caption-text {
-        font-size: 15px;
-      }
-
-      .article {
-        padding: 58px 20px 0;
-      }
-
-      .article h1 {
-        font-size: 29px;
-      }
-
+      .hero-caption-text { font-size: 15px; }
+      .article { padding: 58px 20px 0; }
+      .article h1 { font-size: 29px; }
       .article p,
-      .signature {
-        font-size: 17px;
-      }
-
+      .signature { font-size: 17px; }
       .article-emblem {
         width: 130px;
         height: 130px;
       }
-
       .article-emblem::before {
         width: 105px;
         height: 105px;
       }
-
       .article-emblem::after {
         width: 75px;
         height: 75px;
@@ -444,89 +391,193 @@
   </style>
 </head>
 <body>
-  <div class="page-shell">
-    <header>
-      <div class="topbar">
-        <div class="brand-left">
-          <div class="jw-box">
-            <div class="jw">JW</div>
-            <div class="event">EVENT</div>
-          </div>
-          <div class="brand-text">Jehovah’s Witnesses<br>Conventions</div>
-        </div>
+  <div class="page-shell" id="app">
+    <div class="loading">Chargement…</div>
+  </div>
 
-        <div class="location-box">
-          <div class="location-title">
-            <div class="country">LA RÉUNION</div>
-            <div class="city">SAINT-DENIS</div>
-          </div>
+  <script>
+    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?gid=0&single=true&output=csv";
 
-          <div class="lang-box">
-            <span class="lang-icon">🈯</span>
-            <span>Français</span>
-            <span class="help-icon">?</span>
-          </div>
-        </div>
-      </div>
+    function parseCSV(csvText) {
+      const rows = [];
+      let row = [];
+      let cell = "";
+      let inQuotes = false;
 
-      <nav class="nav-main">
-        <a href="#">⌂ Accueil</a>
-        <a href="#">◌ Lieux</a>
-        <a href="#">◍ Assemblée</a>
-      </nav>
+      for (let i = 0; i < csvText.length; i++) {
+        const char = csvText[i];
+        const next = csvText[i + 1];
 
-      <nav class="nav-tabs">
-        <a href="#" class="active">Bienvenue</a>
-        <a href="oeuvre.html">L’œuvre du Royaume</a>
-        <a href="histoire.html">Notre histoire</a>
-        <a href="pays.html">Le pays et ses habitants</a>
-        <a href="#">Es-tu intéressé(e)&nbsp;?</a>
-      </nav>
-    </header>
+        if (char === '"') {
+          if (inQuotes && next === '"') {
+            cell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          row.push(cell);
+          cell = "";
+        } else if ((char === "\n" || char === "\r") && !inQuotes) {
+          if (char === "\r" && next === "\n") i++;
+          row.push(cell);
+          if (row.some(v => v !== "")) rows.push(row);
+          row = [];
+          cell = "";
+        } else {
+          cell += char;
+        }
+      }
 
-    <main class="content-wrap">
-      <section class="hero">
-        <img
-          class="hero-image"
-          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=80"
-          alt="La Réunion"
-        >
-        <div class="hero-arrow left">‹</div>
-        <div class="hero-arrow right">›</div>
+      if (cell.length > 0 || row.length > 0) {
+        row.push(cell);
+        rows.push(row);
+      }
 
-        <div class="hero-caption">
-          <div class="hero-caption-badge"></div>
-          <div class="hero-caption-text">Panorama de La Réunion entre reliefs, végétation et lumière tropicale</div>
-        </div>
-      </section>
+      if (!rows.length) return [];
 
-      <section class="article">
-        <div class="article-grid">
-          <div class="article-main">
-            <h1>Bienvenue à La Réunion&nbsp;!</h1>
+      const headers = rows[0].map(h => (h || "").trim());
+      return rows.slice(1).map(r => {
+        const obj = {};
+        headers.forEach((h, idx) => {
+          obj[h] = (r[idx] || "").trim();
+        });
+        return obj;
+      });
+    }
 
-            <p>Nous sommes très heureux de vous accueillir à l’assemblée internationale à La Réunion. Au cœur de l’océan Indien, cette île est connue pour la beauté saisissante de ses paysages, la richesse de sa culture et la chaleur de son accueil. Entre mer et montagne, villages créoles et panoramas grandioses, chaque visiteur découvre ici une terre de contrastes et de rencontres.</p>
+    function escapeHtml(str) {
+      return (str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-            <p>La Réunion impressionne par son relief spectaculaire. Ses pitons, ses cirques et ses remparts composent un décor unique, reconnu dans le monde entier. Des hauteurs verdoyantes aux rivages de l’océan, en passant par les coulées volcaniques et les forêts tropicales, l’île offre partout des vues mémorables qui invitent à l’admiration.</p>
+    function toFieldMap(data, pageName) {
+      return data
+        .filter(item => item.page === pageName && item.field && item.field !== "field")
+        .reduce((acc, item) => {
+          acc[item.field] = item.value || "";
+          return acc;
+        }, {});
+    }
 
-            <p>Mais ce qui rend La Réunion particulièrement attachante, ce sont aussi ses habitants. On y apprécie la convivialité, le sens du partage et la joie d’être ensemble. Les influences qui ont façonné l’île au fil du temps donnent naissance à une culture vivante, pleine de couleurs, de saveurs et d’expressions diverses, où l’hospitalité a toute sa place.</p>
+    function renderPage(f) {
+      const heroImage = f.hero_image || "";
+      const heroCaption = f.hero_caption || "";
+      const heroTitle = f.hero_title || "Bienvenue";
+      const heroSubtitle = f.hero_subtitle || "";
+      const intro1 = f.intro_1 || "";
+      const intro2 = f.intro_2 || "";
+      const intro3 = f.intro_3 || "";
+      const intro4 = f.intro_4 || "";
+      const closingText = f.closing_text || "";
+      const signature = f.signature || "";
+      const signature2 = f.signature_2 || "";
 
-            <p>Pendant votre séjour, vous aurez peut-être l’occasion de découvrir quelques-uns des trésors naturels qui font la réputation de l’île : des panoramas de montagne parmi les plus remarquables de l’océan Indien, un volcan célèbre, des jardins tropicaux, des côtes sauvages ou paisibles, et une lumière qui change sans cesse au fil de la journée.</p>
+      return `
+        <header>
+          <div class="topbar">
+            <div class="brand-left">
+              <div class="jw-box">
+                <div class="jw">JW</div>
+                <div class="event">EVENT</div>
+              </div>
+              <div class="brand-text">Jehovah’s Witnesses<br>Conventions</div>
+            </div>
 
-            <p>Nous vous invitons à venir goûter et voir par vous-mêmes la beauté de La Réunion et l’amour qui unit notre fraternité mondiale. Nous attendons votre visite avec une grande joie.</p>
+            <div class="location-box">
+              <div class="location-title">
+                <div class="country">LA RÉUNION</div>
+                <div class="city">SAINT-DENIS</div>
+              </div>
 
-            <div class="signature">
-              <strong>Avec tout notre amour,</strong><br>
-              Votre famille de La Réunion
+              <div class="lang-box">
+                <span class="lang-icon">🈯</span>
+                <span>Français</span>
+                <span class="help-icon">?</span>
+              </div>
             </div>
           </div>
 
-          <aside class="article-side">
-            <div class="article-emblem" aria-hidden="true"></div>
-          </aside>
-        </div>
-      </section>
-    </main>
-  </div>
+          <nav class="nav-main">
+            <a href="#">⌂ Accueil</a>
+            <a href="#">◌ Lieux</a>
+            <a href="#">◍ Assemblée</a>
+          </nav>
+
+          <nav class="nav-tabs">
+            <a href="bienvenue.html" class="active">Bienvenue</a>
+            <a href="oeuvre.html">L’œuvre du Royaume</a>
+            <a href="histoire.html">Notre histoire</a>
+            <a href="pays.html">Le pays et ses habitants</a>
+            <a href="#">Es-tu intéressé(e)&nbsp;?</a>
+          </nav>
+        </header>
+
+        <main class="content-wrap">
+          <section class="hero">
+            <img class="hero-image" src="${escapeHtml(heroImage)}" alt="${escapeHtml(heroTitle)}">
+            <div class="hero-arrow left">‹</div>
+            <div class="hero-arrow right">›</div>
+
+            <div class="hero-caption">
+              <div class="hero-caption-badge"></div>
+              <div class="hero-caption-text">${escapeHtml(heroCaption || heroSubtitle)}</div>
+            </div>
+          </section>
+
+          <section class="article">
+            <div class="article-grid">
+              <div class="article-main">
+                <h1>${escapeHtml(heroTitle)}</h1>
+                <p>${escapeHtml(intro1)}</p>
+                <p>${escapeHtml(intro2)}</p>
+                <p>${escapeHtml(intro3)}</p>
+                <p>${escapeHtml(intro4)}</p>
+                <p>${escapeHtml(closingText)}</p>
+
+                <div class="signature">
+                  <strong>${escapeHtml(signature)}</strong><br>
+                  ${escapeHtml(signature2)}
+                </div>
+              </div>
+
+              <aside class="article-side">
+                <div class="article-emblem" aria-hidden="true"></div>
+              </aside>
+            </div>
+          </section>
+        </main>
+      `;
+    }
+
+    async function loadPage() {
+      const app = document.getElementById("app");
+
+      try {
+        const response = await fetch(SHEET_CSV_URL);
+        if (!response.ok) {
+          throw new Error(`Impossible de charger la Google Sheet.\nHTTP ${response.status}`);
+        }
+
+        const csvText = await response.text();
+        const data = parseCSV(csvText);
+        const fields = toFieldMap(data, "bienvenue");
+
+        if (!Object.keys(fields).length) {
+          throw new Error("Aucune donnée trouvée pour la page 'bienvenue'.");
+        }
+
+        app.innerHTML = renderPage(fields);
+      } catch (error) {
+        app.innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    loadPage();
+  </script>
 </body>
 </html>
