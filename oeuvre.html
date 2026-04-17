@@ -1,567 +1,144 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>L’œuvre du Royaume – Assemblée internationale 2027</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --text: #1f2937;
-      --muted: #6b7280;
-      --line: #d1d5db;
-      --soft: #f3f4f6;
-      --nav: #111827;
-      --nav-active: #374151;
-      --accent: #0f766e;
-      --max: 1120px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Noto Sans", Arial, sans-serif;
-      color: var(--text);
-      background: #ffffff;
-      line-height: 1.65;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .topbar {
-      background: #f9fafb;
-      border-bottom: 1px solid var(--line);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .topbar-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 10px 20px;
-    }
-
-    .site-header {
-      background: #fff;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .site-header-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 18px 20px;
-    }
-
-    .site-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 0;
-    }
-
-    .site-subtitle {
-      margin-top: 4px;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .main-nav {
-      background: var(--nav);
-      border-bottom: 1px solid #000;
-    }
-
-    .main-nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0;
-    }
-
-    .main-nav a {
-      color: #fff;
-      padding: 14px 18px;
-      font-size: 0.95rem;
-      border-right: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .main-nav a:hover {
-      background: #1f2937;
-    }
-
-    .main-nav a.active {
-      background: var(--nav-active);
-      font-weight: 600;
-    }
-
-    .hero {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 28px 20px 18px;
-    }
-
-    .hero-media {
-      background: var(--soft);
-      border: 1px solid var(--line);
-    }
-
-    .hero-media img {
-      width: 100%;
-      aspect-ratio: 16 / 7;
-      object-fit: cover;
-    }
-
-    .hero-caption {
-      padding: 10px 14px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      background: #fafafa;
-    }
-
-    .content {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 10px 20px 56px;
-    }
-
-    .kicker {
-      color: var(--accent);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      font-size: 0.86rem;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: 2.3rem;
-      line-height: 1.2;
-      margin: 0 0 14px;
-      font-weight: 700;
-    }
-
-    .lead {
-      font-size: 1.08rem;
-      color: var(--muted);
-      max-width: 850px;
-      margin-bottom: 28px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
-      margin: 22px 0 36px;
-    }
-
-    .stat-card {
-      border: 1px solid var(--line);
-      background: #fff;
-      padding: 20px 18px;
-    }
-
-    .stat-value {
-      font-size: 1.9rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .section {
-      margin: 42px 0;
-    }
-
-    .section h2 {
-      font-size: 1.45rem;
-      margin: 0 0 16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section p {
-      margin: 0 0 16px;
-    }
-
-    .highlight-box {
-      border-left: 4px solid var(--accent);
-      background: #f8fafc;
-      padding: 18px 18px 2px;
-      margin: 28px 0;
-    }
-
-    .lang-list {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px 24px;
-      margin-top: 16px;
-      color: var(--text);
-    }
-
-    .lang-list div {
-      padding: 10px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .gallery {
-      margin-top: 46px;
-    }
-
-    .gallery h2 {
-      font-size: 1.45rem;
-      margin: 0 0 18px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .gallery-item {
-      border: 1px solid var(--line);
-      background: #fff;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      background: var(--soft);
-    }
-
-    .gallery-caption {
-      padding: 12px 14px;
-      font-size: 0.94rem;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-    }
-
-    .closing {
-      margin-top: 46px;
-      padding-top: 20px;
-      border-top: 1px solid var(--line);
-    }
-
-    .signature {
-      margin-top: 22px;
-      font-weight: 600;
-    }
-
-    .footer {
-      border-top: 1px solid var(--line);
-      background: #fafafa;
-    }
-
-    .footer-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 18px 20px;
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    @media (max-width: 900px) {
-      .stats-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .gallery-grid,
-      .lang-list {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 1.9rem;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .main-nav-inner {
-        flex-direction: column;
-      }
-
-      .main-nav a {
-        border-right: none;
-        border-top: 1px solid rgba(255,255,255,0.08);
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-media img {
-        aspect-ratio: 16 / 10;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      Assemblée internationale 2027 · La Réunion
-    </div>
-  </div>
-
-  <header class="site-header">
-    <div class="site-header-inner">
-      <h1 class="site-title" id="site_title">Assemblée internationale 2027</h1>
-      <div class="site-subtitle" id="site_subtitle">La Réunion</div>
-    </div>
-  </header>
-
-  <nav class="main-nav">
-    <div class="main-nav-inner">
-      <a href="bienvenue.html">Bienvenue</a>
-      <a href="oeuvre.html" class="active">L’œuvre du Royaume</a>
-      <a href="histoire.html">Notre histoire</a>
-      <a href="pays.html">Le pays et ses habitants</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-media">
-      <img id="hero_image" src="" alt="Illustration de l’œuvre du Royaume à La Réunion" />
-      <div class="hero-caption" id="hero_caption"></div>
-    </div>
-  </section>
-
-  <main class="content">
-    <div class="kicker" id="hero_kicker"></div>
-    <h1 id="hero_title"></h1>
-    <div class="lead" id="hero_subtitle"></div>
-
-    <section class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value" id="stat_1_value"></div>
-        <div class="stat-label" id="stat_1_label"></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat_2_value"></div>
-        <div class="stat-label" id="stat_2_label"></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat_3_value"></div>
-        <div class="stat-label" id="stat_3_label"></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="stat_4_value"></div>
-        <div class="stat-label" id="stat_4_label"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 id="section_1_title"></h2>
-      <p id="section_1_text_1"></p>
-      <p id="section_1_text_2"></p>
-    </section>
-
-    <section class="section">
-      <h2 id="section_2_title"></h2>
-      <p id="section_2_text_1"></p>
-      <p id="section_2_text_2"></p>
-
-      <div class="highlight-box">
-        <p id="highlight_1"></p>
-        <p id="highlight_2"></p>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 id="languages_title"></h2>
-      <p id="languages_intro"></p>
-      <div class="lang-list">
-        <div id="lang_1"></div>
-        <div id="lang_2"></div>
-        <div id="lang_3"></div>
-        <div id="lang_4"></div>
-        <div id="lang_5"></div>
-        <div id="lang_6"></div>
-        <div id="lang_7"></div>
-        <div id="lang_8"></div>
-      </div>
-    </section>
-
-    <section class="gallery">
-      <h2 id="gallery_title"></h2>
-      <div class="gallery-grid" id="gallery_grid"></div>
-    </section>
-
-    <section class="closing">
-      <p id="closing_1"></p>
-      <p id="closing_2"></p>
-      <div class="signature" id="signature"></div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      Assemblée internationale 2027 · La Réunion
-    </div>
-  </footer>
-
-  <script>
-    const SHEET_URL = "TON_LIEN_GOOGLE_SHEETS_TSV_ICI";
-    const PAGE_KEY = "oeuvre";
-
-    function parseTSV(text) {
-      const lines = text.trim().split(/\r?\n/);
-      const rows = [];
-
-      for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].split("\t");
-        if (cols.length >= 3) {
-          rows.push({
-            page: cols[0]?.trim() || "",
-            field: cols[1]?.trim() || "",
-            value: cols.slice(2).join("\t").trim()
-          });
-        }
-      }
-      return rows;
-    }
-
-    function mapPageData(rows, pageKey) {
-      const data = {};
-      rows
-        .filter(r => r.page === pageKey)
-        .forEach(r => {
-          data[r.field] = r.value;
+<script>
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pubhtml";
+  const PAGE_KEY = "oeuvre";
+
+  function parseTSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    const rows = [];
+
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split("\t");
+      if (cols.length >= 3) {
+        rows.push({
+          page: cols[0]?.trim() || "",
+          field: cols[1]?.trim() || "",
+          value: cols.slice(2).join("\t").trim()
         });
-      return data;
-    }
-
-    function setText(id, value) {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value || "";
-    }
-
-    function setImage(id, url, fallback = "") {
-      const img = document.getElementById(id);
-      if (!img) return;
-      img.src = url || fallback;
-      img.onerror = function () {
-        if (fallback) {
-          this.src = fallback;
-        } else {
-          this.style.display = "none";
-        }
-      };
-    }
-
-    function renderGallery(data) {
-      const grid = document.getElementById("gallery_grid");
-      if (!grid) return;
-
-      const items = [];
-      for (let i = 1; i <= 6; i++) {
-        const url = data[`image_${i}_url`];
-        const caption = data[`image_${i}_caption`];
-        if (url) {
-          items.push({ url, caption: caption || "" });
-        }
       }
+    }
+    return rows;
+  }
 
-      if (!items.length) {
-        grid.innerHTML = "";
-        return;
+  function mapPageData(rows, pageKey) {
+    const data = {};
+    rows
+      .filter(r => r.page === pageKey)
+      .forEach(r => {
+        data[r.field] = r.value;
+      });
+    return data;
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value || "";
+  }
+
+  function setImage(id, url, fallback = "") {
+    const img = document.getElementById(id);
+    if (!img) return;
+    img.src = url || fallback;
+    img.onerror = function () {
+      if (fallback) {
+        this.src = fallback;
+      } else {
+        this.style.display = "none";
       }
+    };
+  }
 
-      grid.innerHTML = items.map(item => `
-        <figure class="gallery-item">
-          <img src="${item.url}" alt="${escapeHtml(item.caption)}" onerror="this.style.display='none'">
-          <figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>
-        </figure>
-      `).join("");
-    }
+  function renderGallery(data) {
+    const grid = document.getElementById("gallery_grid");
+    if (!grid) return;
 
-    function escapeHtml(str) {
-      return String(str || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
-    async function loadPage() {
-      try {
-        const response = await fetch(SHEET_URL);
-        const text = await response.text();
-        const rows = parseTSV(text);
-        const data = mapPageData(rows, PAGE_KEY);
-
-        setText("site_title", data.site_title);
-        setText("site_subtitle", data.site_subtitle);
-
-        setText("hero_kicker", data.hero_kicker);
-        setText("hero_title", data.hero_title);
-        setText("hero_subtitle", data.hero_subtitle);
-        setText("hero_caption", data.hero_caption);
-        setImage("hero_image", data.hero_image);
-
-        setText("stat_1_value", data.stat_1_value);
-        setText("stat_1_label", data.stat_1_label);
-        setText("stat_2_value", data.stat_2_value);
-        setText("stat_2_label", data.stat_2_label);
-        setText("stat_3_value", data.stat_3_value);
-        setText("stat_3_label", data.stat_3_label);
-        setText("stat_4_value", data.stat_4_value);
-        setText("stat_4_label", data.stat_4_label);
-
-        setText("section_1_title", data.section_1_title);
-        setText("section_1_text_1", data.section_1_text_1);
-        setText("section_1_text_2", data.section_1_text_2);
-
-        setText("section_2_title", data.section_2_title);
-        setText("section_2_text_1", data.section_2_text_1);
-        setText("section_2_text_2", data.section_2_text_2);
-
-        setText("highlight_1", data.highlight_1);
-        setText("highlight_2", data.highlight_2);
-
-        setText("languages_title", data.languages_title);
-        setText("languages_intro", data.languages_intro);
-        setText("lang_1", data.lang_1);
-        setText("lang_2", data.lang_2);
-        setText("lang_3", data.lang_3);
-        setText("lang_4", data.lang_4);
-        setText("lang_5", data.lang_5);
-        setText("lang_6", data.lang_6);
-        setText("lang_7", data.lang_7);
-        setText("lang_8", data.lang_8);
-
-        setText("gallery_title", data.gallery_title);
-        setText("closing_1", data.closing_1);
-        setText("closing_2", data.closing_2);
-        setText("signature", data.signature);
-
-        renderGallery(data);
-      } catch (error) {
-        console.error("Erreur de chargement :", error);
+    const items = [];
+    for (let i = 1; i <= 6; i++) {
+      const url = data[`image_${i}_url`];
+      const caption = data[`image_${i}_caption`];
+      if (url) {
+        items.push({ url, caption: caption || "" });
       }
     }
 
-    loadPage();
-  </script>
-</body>
-</html>
+    if (!items.length) {
+      grid.innerHTML = "";
+      return;
+    }
+
+    grid.innerHTML = items.map(item => `
+      <figure class="gallery-item">
+        <img src="${item.url}" alt="${escapeHtml(item.caption)}" onerror="this.style.display='none'">
+        <figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>
+      </figure>
+    `).join("");
+  }
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  async function loadPage() {
+    try {
+      const response = await fetch(SHEET_URL);
+      const text = await response.text();
+      const rows = parseTSV(text);
+      const data = mapPageData(rows, PAGE_KEY);
+
+      setText("site_title", data.site_title);
+      setText("site_subtitle", data.site_subtitle);
+
+      setText("hero_kicker", data.hero_kicker);
+      setText("hero_title", data.hero_title);
+      setText("hero_subtitle", data.hero_subtitle);
+      setText("hero_caption", data.hero_caption);
+      setImage("hero_image", data.hero_image);
+
+      setText("stat_1_value", data.stat_1_value);
+      setText("stat_1_label", data.stat_1_label);
+      setText("stat_2_value", data.stat_2_value);
+      setText("stat_2_label", data.stat_2_label);
+      setText("stat_3_value", data.stat_3_value);
+      setText("stat_3_label", data.stat_3_label);
+      setText("stat_4_value", data.stat_4_value);
+      setText("stat_4_label", data.stat_4_label);
+
+      setText("section_1_title", data.section_1_title);
+      setText("section_1_text_1", data.section_1_text_1);
+      setText("section_1_text_2", data.section_1_text_2);
+
+      setText("section_2_title", data.section_2_title);
+      setText("section_2_text_1", data.section_2_text_1);
+      setText("section_2_text_2", data.section_2_text_2);
+
+      setText("highlight_1", data.highlight_1);
+      setText("highlight_2", data.highlight_2);
+
+      setText("languages_title", data.languages_title);
+      setText("languages_intro", data.languages_intro);
+      setText("lang_1", data.lang_1);
+      setText("lang_2", data.lang_2);
+      setText("lang_3", data.lang_3);
+      setText("lang_4", data.lang_4);
+      setText("lang_5", data.lang_5);
+      setText("lang_6", data.lang_6);
+      setText("lang_7", data.lang_7);
+      setText("lang_8", data.lang_8);
+
+      setText("gallery_title", data.gallery_title);
+      setText("closing_1", data.closing_1);
+      setText("closing_2", data.closing_2);
+      setText("signature", data.signature);
+
+      renderGallery(data);
+    } catch (error) {
+      console.error("Erreur de chargement :", error);
+    }
+  }
+
+  loadPage();
+</script>
