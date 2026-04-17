@@ -6,440 +6,527 @@
   <title>Bienvenue | La Réunion 2027</title>
   <style>
     :root {
-      --bg: #f3f4f6;
-      --surface: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --accent: #0f766e;
-      --accent-dark: #115e59;
-      --line: #e5e7eb;
-      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      --radius: 20px;
-      --max: 1180px;
+      --page-bg: #dcdcdc;
+      --site-bg: #f5f5f5;
+      --white: #ffffff;
+      --text: #333333;
+      --muted: #666666;
+      --brown-dark: #3b322f;
+      --brown: #5a2d1f;
+      --brown-soft: #8a4b34;
+      --line: #d7d7d7;
+      --tab-line: #b45c3c;
+      --hero-caption-bg: rgba(245, 245, 245, 0.92);
+      --maxw: 1430px;
+      --logo-green: #6f9d31;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
+      background: var(--page-bg);
       color: var(--text);
-      background: var(--bg);
-      line-height: 1.6;
     }
 
-    .container {
-      width: min(var(--max), calc(100% - 32px));
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      max-width: var(--maxw);
       margin: 0 auto;
+      background: var(--site-bg);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: stretch;
+      background: var(--white);
+      border-top: 4px solid #28313d;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: stretch;
+      min-width: 380px;
+    }
+
+    .jw-box {
+      width: 102px;
+      background: var(--logo-green);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .jw-box .jw {
+      font-size: 38px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .jw-box .event {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-text {
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      font-size: 25px;
+      line-height: 1.05;
+      color: #4a4a4a;
+    }
+
+    .location-box {
+      flex: 1;
+      padding: 10px 20px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .location-title {
+      line-height: 1.05;
+    }
+
+    .location-title .country {
+      font-size: 27px;
+      font-weight: 700;
+      color: #5a1f12;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .location-title .city {
+      font-size: 22px;
+      color: #5a1f12;
+      text-transform: uppercase;
+    }
+
+    .lang-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--brown-soft);
+      font-size: 18px;
+      white-space: nowrap;
+    }
+
+    .lang-icon,
+    .help-icon {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .nav-main {
+      background: var(--brown-dark);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      padding: 14px 26px;
+      font-size: 17px;
+      text-transform: uppercase;
+    }
+
+    .nav-main a {
+      opacity: 0.96;
+    }
+
+    .nav-tabs {
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: 34px;
+      padding: 0 12px 0 12px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .nav-tabs a {
+      display: inline-block;
+      padding: 18px 0 14px;
+      font-size: 17px;
+      text-transform: uppercase;
+      color: var(--brown-soft);
+      border-bottom: 3px solid transparent;
+    }
+
+    .nav-tabs a.active {
+      color: var(--brown);
+      font-weight: 700;
+      border-bottom-color: var(--tab-line);
+    }
+
+    .content-wrap {
+      padding: 0 12px 48px;
     }
 
     .hero {
       position: relative;
-      min-height: 72vh;
-      display: flex;
-      align-items: end;
-      background-size: cover;
-      background-position: center;
-      color: white;
-      overflow: hidden;
+      background: #ddd;
     }
 
-    .hero::before {
+    .hero-image {
+      width: 100%;
+      height: 510px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 56px;
+      height: 112px;
+      background: rgba(72, 43, 22, 0.72);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      user-select: none;
+    }
+
+    .hero-arrow.left {
+      left: 0;
+    }
+
+    .hero-arrow.right {
+      right: 0;
+    }
+
+    .hero-caption {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: -30px;
+      background: var(--hero-caption-bg);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 24px;
+      border: 1px solid #e2e2e2;
+    }
+
+    .hero-caption-badge {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 70% 30%, #ffbb45, #e9681a 62%, #8b2f1e 100%);
+      flex: 0 0 auto;
+      position: relative;
+    }
+
+    .hero-caption-badge::before {
       content: "";
       position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.20)),
-        linear-gradient(to right, rgba(0,0,0,0.32), rgba(0,0,0,0.08));
+      inset: 13px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.45);
     }
 
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      padding: 64px 0 56px;
+    .hero-caption-text {
+      font-size: 18px;
+      color: #4f4f4f;
     }
 
-    .kicker {
-      display: inline-block;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.14);
-      backdrop-filter: blur(4px);
-      margin-bottom: 18px;
+    .article {
+      background: var(--site-bg);
+      padding: 86px 8% 0;
     }
 
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(2.2rem, 5vw, 4.5rem);
-      line-height: 1.08;
-      max-width: 820px;
-    }
-
-    .hero-subtitle {
-      margin: 0;
-      max-width: 760px;
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      color: rgba(255,255,255,0.92);
-    }
-
-    .section {
-      padding: 56px 0;
-    }
-
-    .intro-grid {
+    .article-grid {
       display: grid;
-      grid-template-columns: 1.35fr 0.95fr;
-      gap: 28px;
+      grid-template-columns: minmax(0, 1.25fr) 240px;
+      gap: 34px;
       align-items: start;
     }
 
-    .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 28px;
+    .article h1 {
+      margin: 0 0 24px;
+      font-size: 37px;
+      line-height: 1.1;
+      color: var(--brown);
+      font-weight: 700;
     }
 
-    .intro-text p {
-      margin: 0 0 18px;
-      font-size: 1.08rem;
+    .article p {
+      margin: 0 0 20px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #3f3f3f;
     }
 
-    .intro-text p:last-child {
-      margin-bottom: 0;
+    .article-side {
+      display: flex;
+      justify-content: center;
+      padding-top: 4px;
     }
 
-    .side-panel h2,
-    .closing h2,
-    .gallery-block h2 {
-      margin: 0 0 14px;
-      font-size: 1.5rem;
-      line-height: 1.2;
+    .article-emblem {
+      width: 190px;
+      height: 190px;
+      position: relative;
     }
 
-    .highlights {
-      display: grid;
-      gap: 16px;
+    .article-emblem::before,
+    .article-emblem::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
     }
 
-    .highlight {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 18px;
-      background: #fcfcfc;
+    .article-emblem::before {
+      width: 150px;
+      height: 150px;
+      right: 6px;
+      bottom: 6px;
+      background: radial-gradient(circle at 30% 30%, #ffcf5f, #f18a1f 62%, #bf4d1b 100%);
     }
 
-    .highlight h3 {
-      margin: 0 0 8px;
-      font-size: 1.05rem;
-      color: var(--accent-dark);
-    }
-
-    .highlight p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
-
-    .gallery-wrap {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .gallery-item {
-      background: var(--surface);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--line);
-    }
-
-    .gallery-image {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
-      display: block;
-      background: #e5e7eb;
-    }
-
-    .gallery-caption {
-      padding: 14px 16px 16px;
-      font-size: 0.96rem;
-      color: var(--muted);
-    }
-
-    .closing {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-      border: 1px solid var(--line);
-    }
-
-    .closing p {
-      margin: 0 0 16px;
-      font-size: 1.05rem;
+    .article-emblem::after {
+      width: 108px;
+      height: 108px;
+      left: 8px;
+      top: 18px;
+      background:
+        radial-gradient(circle at 70% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0) 60%),
+        linear-gradient(140deg, #7a1f16, #963015);
+      clip-path: polygon(50% 0%, 61% 13%, 78% 10%, 73% 27%, 88% 37%, 71% 44%, 75% 62%, 58% 57%, 50% 74%, 42% 57%, 25% 62%, 29% 44%, 12% 37%, 27% 27%, 22% 10%, 39% 13%);
+      border-radius: 0;
     }
 
     .signature {
-      font-weight: 700;
-      color: var(--accent-dark);
-      margin-top: 18px;
-      line-height: 1.8;
+      margin-top: 30px;
+      font-size: 18px;
+      line-height: 1.7;
+      color: #444;
     }
 
-    .loading,
-    .error {
-      padding: 56px 24px;
-      text-align: center;
-      font-size: 1.05rem;
+    .signature strong {
+      color: var(--brown);
     }
 
-    .loading {
-      color: var(--muted);
-    }
+    @media (max-width: 1100px) {
+      .brand-left {
+        min-width: auto;
+      }
 
-    .error {
-      color: #b91c1c;
-      white-space: pre-line;
-    }
+      .brand-text {
+        font-size: 21px;
+      }
 
-    @media (max-width: 900px) {
-      .intro-grid,
-      .gallery-wrap {
+      .location-title .country {
+        font-size: 23px;
+      }
+
+      .location-title .city {
+        font-size: 19px;
+      }
+
+      .hero-image {
+        height: 430px;
+      }
+
+      .article-grid {
         grid-template-columns: 1fr;
       }
 
-      .hero {
-        min-height: 62vh;
+      .article-side {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-direction: column;
       }
 
-      .section {
-        padding: 40px 0;
+      .brand-left {
+        min-width: 100%;
       }
 
-      .card {
-        padding: 22px;
+      .location-box {
+        padding: 14px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-main {
+        gap: 18px;
+        padding: 12px 16px;
+        font-size: 15px;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .nav-tabs {
+        gap: 22px;
+        padding: 0 16px;
+      }
+
+      .nav-tabs a {
+        font-size: 15px;
+      }
+
+      .content-wrap {
+        padding: 0 0 36px;
+      }
+
+      .hero-image {
+        height: 300px;
+      }
+
+      .hero-arrow {
+        width: 42px;
+        height: 82px;
+        font-size: 42px;
+      }
+
+      .hero-caption {
+        left: 12px;
+        right: 12px;
+        bottom: -22px;
+        padding: 10px 14px;
+      }
+
+      .hero-caption-badge {
+        width: 46px;
+        height: 46px;
+      }
+
+      .hero-caption-text {
+        font-size: 15px;
+      }
+
+      .article {
+        padding: 58px 20px 0;
+      }
+
+      .article h1 {
+        font-size: 29px;
+      }
+
+      .article p,
+      .signature {
+        font-size: 17px;
+      }
+
+      .article-emblem {
+        width: 130px;
+        height: 130px;
+      }
+
+      .article-emblem::before {
+        width: 105px;
+        height: 105px;
+      }
+
+      .article-emblem::after {
+        width: 75px;
+        height: 75px;
       }
     }
   </style>
 </head>
 <body>
-  <div id="app">
-    <div class="loading">Chargement…</div>
+  <div class="page-shell">
+    <header>
+      <div class="topbar">
+        <div class="brand-left">
+          <div class="jw-box">
+            <div class="jw">JW</div>
+            <div class="event">EVENT</div>
+          </div>
+          <div class="brand-text">Jehovah’s Witnesses<br>Conventions</div>
+        </div>
+
+        <div class="location-box">
+          <div class="location-title">
+            <div class="country">LA RÉUNION</div>
+            <div class="city">SAINT-DENIS</div>
+          </div>
+
+          <div class="lang-box">
+            <span class="lang-icon">🈯</span>
+            <span>Français</span>
+            <span class="help-icon">?</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-main">
+        <a href="#">⌂ Accueil</a>
+        <a href="#">◌ Lieux</a>
+        <a href="#">◍ Assemblée</a>
+      </nav>
+
+      <nav class="nav-tabs">
+        <a href="#" class="active">Bienvenue</a>
+        <a href="oeuvre.html">L’œuvre du Royaume</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="pays.html">Le pays et ses habitants</a>
+        <a href="#">Es-tu intéressé(e)&nbsp;?</a>
+      </nav>
+    </header>
+
+    <main class="content-wrap">
+      <section class="hero">
+        <img
+          class="hero-image"
+          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=80"
+          alt="La Réunion"
+        >
+        <div class="hero-arrow left">‹</div>
+        <div class="hero-arrow right">›</div>
+
+        <div class="hero-caption">
+          <div class="hero-caption-badge"></div>
+          <div class="hero-caption-text">Panorama de La Réunion entre reliefs, végétation et lumière tropicale</div>
+        </div>
+      </section>
+
+      <section class="article">
+        <div class="article-grid">
+          <div class="article-main">
+            <h1>Bienvenue à La Réunion&nbsp;!</h1>
+
+            <p>Nous sommes très heureux de vous accueillir à l’assemblée internationale à La Réunion. Au cœur de l’océan Indien, cette île est connue pour la beauté saisissante de ses paysages, la richesse de sa culture et la chaleur de son accueil. Entre mer et montagne, villages créoles et panoramas grandioses, chaque visiteur découvre ici une terre de contrastes et de rencontres.</p>
+
+            <p>La Réunion impressionne par son relief spectaculaire. Ses pitons, ses cirques et ses remparts composent un décor unique, reconnu dans le monde entier. Des hauteurs verdoyantes aux rivages de l’océan, en passant par les coulées volcaniques et les forêts tropicales, l’île offre partout des vues mémorables qui invitent à l’admiration.</p>
+
+            <p>Mais ce qui rend La Réunion particulièrement attachante, ce sont aussi ses habitants. On y apprécie la convivialité, le sens du partage et la joie d’être ensemble. Les influences qui ont façonné l’île au fil du temps donnent naissance à une culture vivante, pleine de couleurs, de saveurs et d’expressions diverses, où l’hospitalité a toute sa place.</p>
+
+            <p>Pendant votre séjour, vous aurez peut-être l’occasion de découvrir quelques-uns des trésors naturels qui font la réputation de l’île : des panoramas de montagne parmi les plus remarquables de l’océan Indien, un volcan célèbre, des jardins tropicaux, des côtes sauvages ou paisibles, et une lumière qui change sans cesse au fil de la journée.</p>
+
+            <p>Nous vous invitons à venir goûter et voir par vous-mêmes la beauté de La Réunion et l’amour qui unit notre fraternité mondiale. Nous attendons votre visite avec une grande joie.</p>
+
+            <div class="signature">
+              <strong>Avec tout notre amour,</strong><br>
+              Votre famille de La Réunion
+            </div>
+          </div>
+
+          <aside class="article-side">
+            <div class="article-emblem" aria-hidden="true"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
   </div>
-
-  <script>
-    const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pubhtml";
-
-    function normalizeGoogleSheetUrl(url) {
-      if (!url) return url;
-
-      if (
-        url.includes("/pub?gid=") ||
-        url.includes("output=csv") ||
-        url.includes("/export?format=csv")
-      ) {
-        return url;
-      }
-
-      const match = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
-      if (!match) return url;
-
-      const sheetId = match[1];
-      const gidMatch = url.match(/[?&]gid=([0-9]+)/);
-      const gid = gidMatch ? gidMatch[1] : "0";
-
-      return `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
-    }
-
-    function parseCSV(csvText) {
-      const rows = [];
-      let row = [];
-      let cell = "";
-      let inQuotes = false;
-
-      for (let i = 0; i < csvText.length; i++) {
-        const char = csvText[i];
-        const next = csvText[i + 1];
-
-        if (char === '"') {
-          if (inQuotes && next === '"') {
-            cell += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (char === ',' && !inQuotes) {
-          row.push(cell);
-          cell = "";
-        } else if ((char === '\n' || char === '\r') && !inQuotes) {
-          if (char === '\r' && next === '\n') i++;
-          row.push(cell);
-          if (row.some(v => v !== "")) rows.push(row);
-          row = [];
-          cell = "";
-        } else {
-          cell += char;
-        }
-      }
-
-      if (cell.length > 0 || row.length > 0) {
-        row.push(cell);
-        rows.push(row);
-      }
-
-      if (rows.length === 0) return [];
-
-      const headers = rows[0].map(h => (h || "").trim());
-      return rows.slice(1).map(r => {
-        const obj = {};
-        headers.forEach((h, idx) => {
-          obj[h] = (r[idx] || "").trim();
-        });
-        return obj;
-      });
-    }
-
-    function escapeHtml(str) {
-      return (str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function toFieldMap(data, pageName) {
-      return data
-        .filter(item => item.page === pageName && item.field && item.field !== "field")
-        .reduce((acc, item) => {
-          acc[item.field] = item.value || "";
-          return acc;
-        }, {});
-    }
-
-    function getGalleryItems(f) {
-      const items = [];
-      for (let i = 1; i <= 6; i++) {
-        const url = f[`image_${i}_url`];
-        const caption = f[`image_${i}_caption`] || "";
-        if (url) {
-          items.push({ url, caption });
-        }
-      }
-      return items;
-    }
-
-    function renderGallery(items) {
-      if (!items.length) return "";
-
-      return `
-        <section class="section" style="padding-top:0;">
-          <div class="container">
-            <div class="gallery-block">
-              <h2>Regards sur La Réunion</h2>
-              <div class="gallery-wrap">
-                ${items.map(item => `
-                  <figure class="gallery-item">
-                    <img class="gallery-image" src="${escapeHtml(item.url)}" alt="${escapeHtml(item.caption || "Photo de La Réunion")}" loading="lazy">
-                    ${item.caption ? `<figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>` : ""}
-                  </figure>
-                `).join("")}
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    function renderPage(f) {
-      const heroImage = f.hero_image || "";
-      const galleryItems = getGalleryItems(f);
-
-      return `
-        <section class="hero" style="background-image:url('${heroImage}')">
-          <div class="container hero-content">
-            <div class="kicker">${escapeHtml(f.hero_kicker || "")}</div>
-            <h1>${escapeHtml(f.hero_title || "Bienvenue")}</h1>
-            <p class="hero-subtitle">${escapeHtml(f.hero_subtitle || "")}</p>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="container intro-grid">
-            <div class="card intro-text">
-              <p>${escapeHtml(f.intro_1 || "")}</p>
-              <p>${escapeHtml(f.intro_2 || "")}</p>
-              <p>${escapeHtml(f.intro_3 || "")}</p>
-              <p>${escapeHtml(f.intro_4 || "")}</p>
-            </div>
-
-            <div class="highlights">
-              <div class="card side-panel">
-                <h2>Découvrir La Réunion</h2>
-                <div class="highlight">
-                  <h3>${escapeHtml(f.card_1_title || "")}</h3>
-                  <p>${escapeHtml(f.card_1_text || "")}</p>
-                </div>
-                <div class="highlight" style="margin-top:12px;">
-                  <h3>${escapeHtml(f.card_2_title || "")}</h3>
-                  <p>${escapeHtml(f.card_2_text || "")}</p>
-                </div>
-                <div class="highlight" style="margin-top:12px;">
-                  <h3>${escapeHtml(f.card_3_title || "")}</h3>
-                  <p>${escapeHtml(f.card_3_text || "")}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        ${renderGallery(galleryItems)}
-
-        <section class="section" style="padding-top:0;">
-          <div class="container">
-            <div class="card closing">
-              <h2>${escapeHtml(f.closing_title || "")}</h2>
-              <p>${escapeHtml(f.closing_text || "")}</p>
-              <div class="signature">
-                ${escapeHtml(f.signature || "")}<br>
-                ${escapeHtml(f.signature_2 || "")}
-              </div>
-            </div>
-          </div>
-        </section>
-      `;
-    }
-
-    async function loadPage() {
-      const app = document.getElementById("app");
-      const finalUrl = normalizeGoogleSheetUrl(SHEET_CSV_URL);
-
-      try {
-        const response = await fetch(finalUrl);
-        if (!response.ok) {
-          throw new Error(`Impossible de charger la Google Sheet.\nHTTP ${response.status}\nURL : ${finalUrl}`);
-        }
-
-        const csvText = await response.text();
-        const data = parseCSV(csvText);
-        const fields = toFieldMap(data, "bienvenue");
-
-        if (!Object.keys(fields).length) {
-          throw new Error("Aucune donnée trouvée pour la page 'bienvenue'.");
-        }
-
-        app.innerHTML = renderPage(fields);
-      } catch (error) {
-        app.innerHTML = `<div class="error">${escapeHtml(error.message)}</div>`;
-      }
-    }
-
-    loadPage();
-  </script>
 </body>
 </html>
