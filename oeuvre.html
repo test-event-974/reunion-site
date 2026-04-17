@@ -1,5 +1,4 @@
 <script>
-
   const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?output=tsv";
   const PAGE_KEY = "oeuvre";
 
@@ -11,12 +10,13 @@
       const cols = lines[i].split("\t");
       if (cols.length >= 3) {
         rows.push({
-          page: cols[0]?.trim() || "",
-          field: cols[1]?.trim() || "",
+          page: (cols[0] || "").trim(),
+          field: (cols[1] || "").trim(),
           value: cols.slice(2).join("\t").trim()
         });
       }
     }
+
     return rows;
   }
 
@@ -38,7 +38,13 @@
   function setImage(id, url, fallback = "") {
     const img = document.getElementById(id);
     if (!img) return;
-    img.src = url || fallback;
+
+    if (!url) {
+      img.style.display = "none";
+      return;
+    }
+
+    img.src = url;
     img.onerror = function () {
       if (fallback) {
         this.src = fallback;
@@ -46,6 +52,15 @@
         this.style.display = "none";
       }
     };
+  }
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function renderGallery(data) {
@@ -56,7 +71,7 @@
     for (let i = 1; i <= 6; i++) {
       const url = data[`image_${i}_url`];
       const caption = data[`image_${i}_caption`];
-      if (url) {
+      if (url && !url.includes("...")) {
         items.push({ url, caption: caption || "" });
       }
     }
@@ -74,21 +89,18 @@
     `).join("");
   }
 
-  function escapeHtml(str) {
-    return String(str || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
   async function loadPage() {
     try {
       const response = await fetch(SHEET_URL);
       const text = await response.text();
+
+      console.log("RAW TSV:", text);
+
       const rows = parseTSV(text);
+      console.log("ROWS:", rows);
+
       const data = mapPageData(rows, PAGE_KEY);
+      console.log("DATA:", data);
 
       setText("site_title", data.site_title);
       setText("site_subtitle", data.site_subtitle);
