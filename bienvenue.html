@@ -23,13 +23,9 @@
       --logo-green: #6f9d31;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
+    html { -webkit-text-size-adjust: 100%; }
 
     body {
       margin: 0;
@@ -143,17 +139,6 @@
       scrollbar-width: thin;
     }
 
-    .nav-main::-webkit-scrollbar,
-    .nav-tabs::-webkit-scrollbar {
-      height: 6px;
-    }
-
-    .nav-main::-webkit-scrollbar-thumb,
-    .nav-tabs::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.25);
-      border-radius: 999px;
-    }
-
     .nav-tabs {
       background: #fff;
       display: flex;
@@ -181,13 +166,16 @@
 
     .hero {
       position: relative;
+      background: #d8d8d8;
     }
 
-    .hero img {
+    .hero-media {
       width: 100%;
       height: 500px;
-      object-fit: cover;
-      display: block;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #d8d8d8;
     }
 
     .hero-caption {
@@ -247,48 +235,24 @@
     }
 
     @media (max-width: 1024px) {
-      .brand-text {
-        font-size: 21px;
-      }
-
-      .country {
-        font-size: 23px;
-      }
-
-      .city {
-        font-size: 18px;
-      }
-
-      .hero img {
-        height: 420px;
-      }
-
-      .article {
-        padding-top: 66px;
-      }
+      .brand-text { font-size: 21px; }
+      .country { font-size: 23px; }
+      .city { font-size: 18px; }
+      .hero-media { height: 420px; }
+      .article { padding-top: 66px; }
     }
 
     @media (max-width: 760px) {
-      .topbar {
-        flex-direction: column;
-      }
-
-      .brand-block {
-        width: 100%;
-      }
+      .topbar { flex-direction: column; }
+      .brand-block { width: 100%; }
 
       .jw-box {
         width: 88px;
         min-width: 88px;
       }
 
-      .jw {
-        font-size: 32px;
-      }
-
-      .event {
-        font-size: 14px;
-      }
+      .jw { font-size: 32px; }
+      .event { font-size: 14px; }
 
       .brand-text {
         padding: 12px 14px;
@@ -302,17 +266,9 @@
         gap: 10px;
       }
 
-      .country {
-        font-size: 20px;
-      }
-
-      .city {
-        font-size: 16px;
-      }
-
-      .lang-box {
-        font-size: 15px;
-      }
+      .country { font-size: 20px; }
+      .city { font-size: 16px; }
+      .lang-box { font-size: 15px; }
 
       .nav-main {
         gap: 20px;
@@ -330,9 +286,7 @@
         padding: 14px 0 12px;
       }
 
-      .hero img {
-        height: 260px;
-      }
+      .hero-media { height: 260px; }
 
       .hero-caption {
         left: 12px;
@@ -364,26 +318,13 @@
     }
 
     @media (max-width: 420px) {
-      .brand-text {
-        font-size: 17px;
-      }
-
-      .hero img {
-        height: 220px;
-      }
-
-      h1 {
-        font-size: 25px;
-      }
-
-      p,
-      .signature {
-        font-size: 15px;
-      }
+      .brand-text { font-size: 17px; }
+      .hero-media { height: 220px; }
+      h1 { font-size: 25px; }
+      p, .signature { font-size: 15px; }
     }
   </style>
 </head>
-
 <body>
   <div id="app" class="page-shell">
     <div class="loading">Chargement…</div>
@@ -391,6 +332,7 @@
 
   <script>
     const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?gid=0&single=true&output=csv";
+    const FALLBACK_HERO_IMAGE = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1800&q=80";
 
     function parseCSV(text) {
       const rows = [];
@@ -450,6 +392,10 @@
         .replace(/'/g, "&#039;");
     }
 
+    function escapeAttr(str) {
+      return escapeHtml(str);
+    }
+
     function toMap(data) {
       const map = {};
       data.forEach(d => {
@@ -460,8 +406,12 @@
       return map;
     }
 
+    function safeImage(url) {
+      return url && url.trim() ? url.trim() : FALLBACK_HERO_IMAGE;
+    }
+
     function render(f) {
-      const heroImage = escapeHtml(f.hero_image || "");
+      const heroImage = safeImage(f.hero_image);
       const heroCaption = escapeHtml(f.hero_caption || f.hero_subtitle || "");
       const heroTitle = escapeHtml(f.hero_title || "Bienvenue");
       const intro1 = escapeHtml(f.intro_1 || "");
@@ -507,7 +457,7 @@
         </header>
 
         <div class="hero">
-          <img src="${heroImage}" alt="${heroTitle}">
+          <div class="hero-media" style="background-image:url('${escapeAttr(heroImage)}');"></div>
           <div class="hero-caption">${heroCaption}</div>
         </div>
 
