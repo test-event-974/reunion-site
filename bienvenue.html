@@ -1,40 +1,71 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Bienvenue</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenue</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <header class="topbar">
+    <nav class="nav">
+      <a href="bienvenue.html" class="active">Bienvenue</a>
+      <a href="oeuvre.html">L’œuvre du Royaume</a>
+      <a href="histoire.html">Notre histoire</a>
+      <a href="pays.html">Le pays et ses habitants</a>
+      <a href="interesse.html">Es-tu intéressé(e) ?</a>
+    </nav>
+  </header>
 
-<nav>
-  <a href="bienvenue.html">Bienvenue</a>
-  <a href="oeuvre.html">L’œuvre du Royaume</a>
-  <a href="histoire.html">Notre histoire</a>
-  <a href="pays.html">Le pays et ses habitants</a>
-  <a href="interesse.html">Es-tu intéressé(e) ?</a>
-</nav>
+  <section class="hero" id="hero">
+    <div class="hero-overlay">
+      <div class="hero-inner">
+        <div class="hero-kicker" id="hero_kicker"></div>
+        <h1 class="hero-title" id="hero_title"></h1>
+        <p class="hero-subtitle" id="hero_subtitle"></p>
+      </div>
+    </div>
+  </section>
 
-<section class="hero" id="hero">
-  <h4 id="hero_kicker"></h4>
-  <h1 id="hero_title"></h1>
-</section>
+  <main class="container">
+    <section class="gallery-grid" id="carousel_grid"></section>
 
-<script src="script.js"></script>
-<script>
-(async () => {
-  const data = await loadData();
-  const page = getPageData(data, "bienvenue");
+    <div class="spacer-32"></div>
 
-  document.getElementById("hero_kicker").innerText = page.hero_kicker || "";
-  document.getElementById("hero_title").innerText = page.hero_title || "";
+    <section class="two-col">
+      <article class="card">
+        <h2 id="article_title"></h2>
+        <p id="article_p1"></p>
+        <p id="article_p2"></p>
+        <p id="article_p3"></p>
+        <p id="article_p4"></p>
+        <p id="article_p5"></p>
+      </article>
 
-  if (page.hero_image) {
-    document.getElementById("hero").style.backgroundImage = `url(${page.hero_image})`;
-  }
-})();
-</script>
-<script src="script.js"></script>
+      <aside class="card">
+        <img id="logo_image" class="side-image" alt="Logo" />
+      </aside>
+    </section>
+
+    <div class="info-grid">
+      <section class="info-box">
+        <h3 id="date_label"></h3>
+        <p id="date_value"></p>
+      </section>
+
+      <section class="info-box">
+        <h3 id="languages_label"></h3>
+        <div class="pill-wrap" id="languages_list"></div>
+      </section>
+
+      <section class="info-box">
+        <h3 id="branches_label"></h3>
+        <div class="pill-wrap" id="branches_list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>loadPage("bienvenue");</script>
 </body>
 </html>
