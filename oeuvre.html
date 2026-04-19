@@ -1,3 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>L’œuvre du Royaume</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+  <a href="bienvenue.html">Bienvenue</a>
+  <a href="oeuvre.html">L’œuvre du Royaume</a>
+  <a href="histoire.html">Notre histoire</a>
+  <a href="pays.html">Le pays et ses habitants</a>
+  <a href="interesse.html">Es-tu intéressé(e) ?</a>
+</nav>
+
+<section class="hero">
+  <h4 id="hero_kicker"></h4>
+  <h1 id="hero_title"></h1>
+  <p id="hero_subtitle"></p>
+  <img id="hero_image" />
+</section>
+
+<section id="gallery">
+  <h2 id="gallery_title"></h2>
+  <div id="gallery_grid"></div>
+</section>
+
+<!-- SCRIPT ICI (important : en bas du body) -->
 <script>
   const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?output=tsv";
   const PAGE_KEY = "oeuvre";
@@ -5,28 +36,24 @@
   function parseTSV(text) {
     const lines = text.trim().split(/\r?\n/);
     const rows = [];
-
     for (let i = 1; i < lines.length; i++) {
       const cols = lines[i].split("\t");
       if (cols.length >= 3) {
         rows.push({
-          page: (cols[0] || "").trim(),
-          field: (cols[1] || "").trim(),
+          page: cols[0].trim(),
+          field: cols[1].trim(),
           value: cols.slice(2).join("\t").trim()
         });
       }
     }
-
     return rows;
   }
 
   function mapPageData(rows, pageKey) {
     const data = {};
-    rows
-      .filter(r => r.page === pageKey)
-      .forEach(r => {
-        data[r.field] = r.value;
-      });
+    rows.filter(r => r.page === pageKey).forEach(r => {
+      data[r.field] = r.value;
+    });
     return data;
   }
 
@@ -35,32 +62,9 @@
     if (el) el.textContent = value || "";
   }
 
-  function setImage(id, url, fallback = "") {
+  function setImage(id, url) {
     const img = document.getElementById(id);
-    if (!img) return;
-
-    if (!url) {
-      img.style.display = "none";
-      return;
-    }
-
-    img.src = url;
-    img.onerror = function () {
-      if (fallback) {
-        this.src = fallback;
-      } else {
-        this.style.display = "none";
-      }
-    };
-  }
-
-  function escapeHtml(str) {
-    return String(str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    if (img && url) img.src = url;
   }
 
   function renderGallery(data) {
@@ -71,87 +75,35 @@
     for (let i = 1; i <= 6; i++) {
       const url = data[`image_${i}_url`];
       const caption = data[`image_${i}_caption`];
-      if (url && !url.includes("...")) {
-        items.push({ url, caption: caption || "" });
-      }
-    }
-
-    if (!items.length) {
-      grid.innerHTML = "";
-      return;
+      if (url) items.push({ url, caption });
     }
 
     grid.innerHTML = items.map(item => `
-      <figure class="gallery-item">
-        <img src="${item.url}" alt="${escapeHtml(item.caption)}" onerror="this.style.display='none'">
-        <figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>
+      <figure>
+        <img src="${item.url}">
+        <figcaption>${item.caption || ""}</figcaption>
       </figure>
     `).join("");
   }
 
   async function loadPage() {
-    try {
-      const response = await fetch(SHEET_URL);
-      const text = await response.text();
+    const res = await fetch(SHEET_URL);
+    const text = await res.text();
+    const rows = parseTSV(text);
+    const data = mapPageData(rows, PAGE_KEY);
 
-      console.log("RAW TSV:", text);
+    setText("hero_kicker", data.hero_kicker);
+    setText("hero_title", data.hero_title);
+    setText("hero_subtitle", data.hero_subtitle);
+    setImage("hero_image", data.hero_image);
 
-      const rows = parseTSV(text);
-      console.log("ROWS:", rows);
+    setText("gallery_title", data.gallery_title);
 
-      const data = mapPageData(rows, PAGE_KEY);
-      console.log("DATA:", data);
-
-      setText("site_title", data.site_title);
-      setText("site_subtitle", data.site_subtitle);
-
-      setText("hero_kicker", data.hero_kicker);
-      setText("hero_title", data.hero_title);
-      setText("hero_subtitle", data.hero_subtitle);
-      setText("hero_caption", data.hero_caption);
-      setImage("hero_image", data.hero_image);
-
-      setText("stat_1_value", data.stat_1_value);
-      setText("stat_1_label", data.stat_1_label);
-      setText("stat_2_value", data.stat_2_value);
-      setText("stat_2_label", data.stat_2_label);
-      setText("stat_3_value", data.stat_3_value);
-      setText("stat_3_label", data.stat_3_label);
-      setText("stat_4_value", data.stat_4_value);
-      setText("stat_4_label", data.stat_4_label);
-
-      setText("section_1_title", data.section_1_title);
-      setText("section_1_text_1", data.section_1_text_1);
-      setText("section_1_text_2", data.section_1_text_2);
-
-      setText("section_2_title", data.section_2_title);
-      setText("section_2_text_1", data.section_2_text_1);
-      setText("section_2_text_2", data.section_2_text_2);
-
-      setText("highlight_1", data.highlight_1);
-      setText("highlight_2", data.highlight_2);
-
-      setText("languages_title", data.languages_title);
-      setText("languages_intro", data.languages_intro);
-      setText("lang_1", data.lang_1);
-      setText("lang_2", data.lang_2);
-      setText("lang_3", data.lang_3);
-      setText("lang_4", data.lang_4);
-      setText("lang_5", data.lang_5);
-      setText("lang_6", data.lang_6);
-      setText("lang_7", data.lang_7);
-      setText("lang_8", data.lang_8);
-
-      setText("gallery_title", data.gallery_title);
-      setText("closing_1", data.closing_1);
-      setText("closing_2", data.closing_2);
-      setText("signature", data.signature);
-
-      renderGallery(data);
-    } catch (error) {
-      console.error("Erreur de chargement :", error);
-    }
+    renderGallery(data);
   }
 
   loadPage();
 </script>
+
+</body>
+</html>
