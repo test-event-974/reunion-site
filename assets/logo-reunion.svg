@@ -1,0 +1,27 @@
+<svg width="700" height="700" viewBox="0 0 700 700" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="700" height="700" fill="#EFEFEF"/>
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF8A00"/>
+      <stop offset="1" stop-color="#FFD400"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#43D5E6"/>
+      <stop offset="1" stop-color="#0EA1CB"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="350" cy="185" r="92" fill="url(#sun)"/>
+  <path d="M135 353C194 320 255 262 296 217C302 211 310 205 320 205C337 205 345 212 353 217C362 223 366 217 373 215C382 212 395 210 404 220C446 269 501 320 564 353C546 420 510 463 462 495H239C190 463 154 420 135 353Z" fill="#6B2214"/>
+  <path d="M170 357C227 340 272 328 349 328C427 328 474 339 531 357L510 408C459 439 432 452 349 452C266 452 239 439 190 408L170 357Z" fill="#74B73D"/>
+  <path d="M208 365C246 365 277 374 304 392C264 390 235 389 204 396L208 365Z" fill="#2E7C39"/>
+  <path d="M490 367C452 368 421 377 393 395C433 393 462 392 494 399L490 367Z" fill="#2E7C39"/>
+  <path d="M180 468C233 462 288 463 350 463C411 463 467 462 520 468C495 510 440 545 350 545C260 545 205 510 180 468Z" fill="url(#water)"/>
+  <path d="M406 202C451 188 492 198 536 222C560 235 582 238 611 229C597 243 584 247 557 246C537 245 516 248 501 259L406 202Z" fill="#6B2214"/>
+  <path d="M503 238C560 240 613 268 652 329C610 286 561 265 502 256L503 238Z" fill="#6B2214"/>
+  <circle cx="516" cy="224" r="4" fill="white"/>
+  <circle cx="516" cy="224" r="2" fill="#202020"/>
+
+  <text x="350" y="612" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="700" fill="#1F7331">La Réunion</text>
+  <text x="350" y="664" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="500" fill="#1EB3D1">Saint-Denis</text>
+</svg>
