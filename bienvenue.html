@@ -3,69 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bienvenue</title>
+  <title>Bienvenue en Afrique du Sud</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <header class="topbar">
-    <nav class="nav">
-      <a href="bienvenue.html" class="active">Bienvenue</a>
-      <a href="oeuvre.html">L’œuvre du Royaume</a>
-      <a href="histoire.html">Notre histoire</a>
-      <a href="pays.html">Le pays et ses habitants</a>
-      <a href="interesse.html">Es-tu intéressé(e) ?</a>
-    </nav>
-  </header>
-
-  <section class="hero" id="hero">
-    <div class="hero-overlay">
-      <div class="hero-inner">
-        <div class="hero-kicker" id="hero_kicker"></div>
-        <h1 class="hero-title" id="hero_title"></h1>
-        <p class="hero-subtitle" id="hero_subtitle"></p>
+<body class="jw-page">
+  <div class="jw-shell">
+    <header class="jw-header">
+      <div class="jw-brandbar">
+        <div class="jw-logo-block">
+          <span class="jw-logo-square">JW</span>
+          <div class="jw-logo-text">
+            <span>Jehovah’s Witnesses</span>
+            <strong>Convention</strong>
+          </div>
+          <div class="jw-location">SOUTH AFRICA<br/>JOHANNESBURG</div>
+        </div>
+        <div class="jw-lang">Français</div>
       </div>
-    </div>
-  </section>
 
-  <main class="container">
-    <section class="gallery-grid" id="carousel_grid"></section>
+      <div class="jw-toolsbar">
+        <span>ACCUEIL</span>
+        <span>LIEUX D’ASSEMBLÉE</span>
+      </div>
 
-    <div class="spacer-32"></div>
+      <nav class="jw-menubar">
+        <a href="bienvenue.html" class="active">BIENVENUE</a>
+        <a href="oeuvre.html">L’ŒUVRE DU ROYAUME</a>
+        <a href="histoire.html">NOTRE HISTOIRE</a>
+        <a href="pays.html">LE PAYS ET SES HABITANTS</a>
+        <a href="interesse.html">ES-TU INTÉRESSÉ(E)&nbsp;?</a>
+      </nav>
+    </header>
 
-    <section class="two-col">
-      <article class="card">
-        <h2 id="article_title"></h2>
-        <p id="article_p1"></p>
-        <p id="article_p2"></p>
-        <p id="article_p3"></p>
-        <p id="article_p4"></p>
-        <p id="article_p5"></p>
-      </article>
-
-      <aside class="card">
-        <img id="logo_image" class="side-image" alt="Logo" />
-      </aside>
+    <section class="jw-hero">
+      <button class="jw-arrow" aria-label="Précédent">❮</button>
+      <img src="https://images.unsplash.com/photo-1521790797524-b2497295b8a0?auto=format&fit=crop&w=1400&q=80" alt="Frères en discussion" />
+      <button class="jw-arrow" aria-label="Suivant">❯</button>
     </section>
 
-    <div class="info-grid">
-      <section class="info-box">
-        <h3 id="date_label"></h3>
-        <p id="date_value"></p>
+    <div class="jw-cta">🦁&nbsp;&nbsp;Conduite d'un cours biblique à domicile</div>
+
+    <main class="jw-content">
+      <section class="jw-message">
+        <h1>Bienvenue en Afrique du Sud&nbsp;!</h1>
+        <p>Nous sommes très heureux de vous accueillir à l'assemblée internationale en Afrique du Sud. Affectueusement appelée «&nbsp;Mzanzi&nbsp;», ce qui signifie «&nbsp;Sud&nbsp;» dans l'une des langues locales, l'Afrique du Sud est un pays riche en cultures diverses, en paysages magnifiques et en hospitalité chaleureuse.</p>
+        <p>Ses habitants sont connus pour leur accueil chaleureux et leur joie de vivre. Ils aiment partager un sourire, raconter une histoire et créer des liens avec ceux qui leur rendent visite. La ville qui accueille l'assemblée, Johannesburg, est aussi connue sous les noms de Joburg, Jozi ou eGoli, ce qui signifie «&nbsp;la ville de l'or&nbsp;».</p>
+        <p>Vous pourrez admirer les panoramas impressionnants des célèbres montagnes du Drakensberg, vous promener sur l'une des plages immaculées du pays, savourer des vins renommés dans la région viticole du Cap, ou encore partir à la découverte des «&nbsp;Big Five&nbsp;» dans l'une de nos réserves naturelles bien connues.</p>
+        <p>Lors de votre visite, vous ne manquerez pas de faire vôtres les paroles du psalmiste&nbsp;: «&nbsp;Les œuvres de Jéhovah sont grandioses&nbsp;; tous ceux qui y prennent plaisir les étudient.&nbsp;» — Psaume 111:2.</p>
+        <p>Nous vous invitons à venir goûter et voir l'amour qu'un frère ou une sœur peut manifester (Psaume 133:1). Nous attendons votre visite avec une grande impatience&nbsp;!</p>
+        <p>Avec tout notre amour,<br/>Votre famille d’Afrique du Sud</p>
       </section>
 
-      <section class="info-box">
-        <h3 id="languages_label"></h3>
-        <div class="pill-wrap" id="languages_list"></div>
-      </section>
-
-      <section class="info-box">
-        <h3 id="branches_label"></h3>
-        <div class="pill-wrap" id="branches_list"></div>
-      </section>
-    </div>
-  </main>
-
-  <script src="script.js"></script>
-  <script>loadPage("bienvenue");</script>
+      <aside class="jw-logo-panel">
+        <img src="assets/logo-reunion.svg" alt="Logo La Réunion Saint-Denis" />
+      </aside>
+    </main>
+  </div>
 </body>
 </html>
