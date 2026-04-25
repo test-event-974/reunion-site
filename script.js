@@ -1,5 +1,57 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTOY9WmGasf0YMnB1w3mpQYNIAF-C3b1j46K7JxckTOlapK4RdAZtofozukxHeSAl2IqwWzCxaxSqtg/pub?output=tsv";
 
+const FALLBACK_CONTENT = {
+  bienvenue: {
+    hero_kicker: "Bienvenue",
+    hero_title: "Site de présentation",
+    hero_subtitle: "Le contenu n'a pas pu être chargé en ligne. Voici une version locale minimale.",
+    article_title: "Accès temporaire",
+    article_p1: "La source distante est momentanément indisponible.",
+    article_p2: "Réessayez dans quelques minutes pour retrouver tout le contenu.",
+    date_label: "Mise à jour",
+    date_value: "En attente",
+    languages_label: "Langues",
+    language_1: "Français",
+    branches_label: "Rubriques",
+    branch_1: "Accueil"
+  },
+  oeuvre: {
+    hero_kicker: "L'œuvre du Royaume",
+    hero_title: "Contenu temporaire",
+    hero_subtitle: "Les données complètes seront visibles dès que la connexion au tableur sera rétablie.",
+    languages_label: "Langues",
+    languages_text: "Cette section sera automatiquement remplie.",
+    section_1_title: "Vue d'ensemble",
+    section_1_text_1: "Le contenu est chargé depuis une source distante.",
+    section_2_title: "À retenir",
+    highlight_1: "Connexion requise pour le contenu complet"
+  },
+  histoire: {
+    hero_kicker: "Notre histoire",
+    hero_title: "Contenu temporaire",
+    hero_subtitle: "Les périodes historiques apparaîtront automatiquement après chargement des données.",
+    reading_label: "Lectures recommandées",
+    reading_1: "Réessayez ultérieurement."
+  },
+  pays: {
+    hero_kicker: "Le pays et ses habitants",
+    hero_title: "Contenu temporaire",
+    hero_subtitle: "Le détail géographique, culturel et climatique est indisponible pour le moment.",
+    geo_title: "Géographie",
+    geo_text_1: "Les informations sont synchronisées depuis un tableur en ligne.",
+    climate_title: "Climat",
+    climate_text_1: "Réessayez dans quelques instants."
+  },
+  interesse: {
+    hero_kicker: "Es-tu intéressé(e) ?",
+    hero_title: "Contact",
+    hero_subtitle: "Les informations détaillées n'ont pas pu être chargées.",
+    intro_p1: "Vous pouvez toutefois revenir plus tard pour consulter la version complète.",
+    cta_title: "Restez connecté",
+    cta_text: "Réessayez lorsque la connexion à la source de données sera disponible."
+  }
+};
+
 function parseTSV(text) {
   const lines = text.trim().split(/\r?\n/);
   const rows = [];
@@ -33,11 +85,6 @@ function setText(id, value) {
   if (el) el.textContent = value || "";
 }
 
-function setHTML(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = value || "";
-}
-
 function setImage(id, url, fallback = "") {
   const img = document.getElementById(id);
   if (!img) return;
@@ -47,6 +94,7 @@ function setImage(id, url, fallback = "") {
     return;
   }
 
+  img.style.display = "block";
   img.src = url;
   img.onerror = function () {
     if (fallback) {
@@ -78,6 +126,17 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
+function showStatusBanner(message) {
+  let banner = document.getElementById("status_banner");
+  if (!banner) {
+    banner = document.createElement("div");
+    banner.id = "status_banner";
+    banner.className = "status-banner";
+    document.body.appendChild(banner);
+  }
+  banner.textContent = message;
+}
+
 function renderList(containerId, values, itemClass = "") {
   const el = document.getElementById(containerId);
   if (!el) return;
@@ -105,7 +164,7 @@ function renderGallery(containerId, items) {
 
   grid.innerHTML = filtered.map(item => `
     <figure class="gallery-item">
-      <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.caption || "")}" onerror="this.style.display='none'">
+      <img loading="lazy" src="${escapeHtml(item.url)}" alt="${escapeHtml(item.caption || "")}" onerror="this.style.display='none'">
       ${item.caption ? `<figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>` : ""}
     </figure>
   `).join("");
@@ -155,7 +214,7 @@ function renderHistoryPeriods(data) {
         <div class="gallery-grid">
           ${images.map(item => `
             <figure class="gallery-item">
-              <img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.caption || "")}" onerror="this.style.display='none'">
+              <img loading="lazy" src="${escapeHtml(item.url)}" alt="${escapeHtml(item.caption || "")}" onerror="this.style.display='none'">
               ${item.caption ? `<figcaption class="gallery-caption">${escapeHtml(item.caption)}</figcaption>` : ""}
             </figure>
           `).join("")}
@@ -171,7 +230,6 @@ function renderPageCommon(data) {
   setText("hero_kicker", data.hero_kicker);
   setText("hero_title", data.hero_title || data.page_title || data.article_title);
   setText("hero_subtitle", data.hero_subtitle);
-  setText("hero_caption", data.hero_caption);
   setImage("hero_image", data.hero_image);
   setImage("logo_image", data.logo_image);
   setBackgroundImage("hero", data.hero_image);
@@ -292,17 +350,17 @@ function renderPays(data) {
     data.climate_region_1, data.climate_region_2, data.climate_region_3, data.climate_region_4
   ], "pill");
 
-  renderGallery("geo_gallery", [1,2,3,4,5].map(i => ({
+  renderGallery("geo_gallery", [1, 2, 3, 4, 5].map(i => ({
     url: data[`geo_image_${i}`],
     caption: data[`geo_caption_${i}`]
   })));
 
-  renderGallery("fauna_gallery", [1,2,3,4,5].map(i => ({
+  renderGallery("fauna_gallery", [1, 2, 3, 4, 5].map(i => ({
     url: data[`fauna_image_${i}`],
     caption: data[`fauna_caption_${i}`]
   })));
 
-  renderGallery("cuisine_gallery", [1,2,3,4,5,6,7,8].map(i => ({
+  renderGallery("cuisine_gallery", [1, 2, 3, 4, 5, 6, 7, 8].map(i => ({
     url: data[`cuisine_image_${i}`],
     caption: data[`cuisine_caption_${i}`]
   })));
@@ -324,37 +382,54 @@ function renderInteresse(data) {
   if (ctaBtn) {
     ctaBtn.textContent = data.cta_button_label || "";
     ctaBtn.href = data.cta_button_url || "#";
+    ctaBtn.target = "_blank";
+    ctaBtn.rel = "noopener noreferrer";
     if (!data.cta_button_label) ctaBtn.style.display = "none";
+  }
+}
+
+function renderByPageKey(pageKey, data) {
+  switch (pageKey) {
+    case "bienvenue":
+      renderBienvenue(data);
+      break;
+    case "oeuvre":
+      renderOeuvre(data);
+      break;
+    case "histoire":
+      renderHistoire(data);
+      break;
+    case "pays":
+      renderPays(data);
+      break;
+    case "interesse":
+      renderInteresse(data);
+      break;
+    default:
+      console.warn("Page inconnue :", pageKey);
   }
 }
 
 async function loadPage(pageKey) {
   try {
-    const response = await fetch(SHEET_URL);
+    const response = await fetch(SHEET_URL, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
     const text = await response.text();
     const rows = parseTSV(text);
     const data = mapPageData(rows, pageKey);
 
-    switch (pageKey) {
-      case "bienvenue":
-        renderBienvenue(data);
-        break;
-      case "oeuvre":
-        renderOeuvre(data);
-        break;
-      case "histoire":
-        renderHistoire(data);
-        break;
-      case "pays":
-        renderPays(data);
-        break;
-      case "interesse":
-        renderInteresse(data);
-        break;
-      default:
-        console.warn("Page inconnue :", pageKey);
+    if (!Object.keys(data).length) {
+      throw new Error(`Aucune donnée trouvée pour ${pageKey}`);
     }
+
+    renderByPageKey(pageKey, data);
   } catch (error) {
     console.error("Erreur de chargement :", error);
+    const fallback = FALLBACK_CONTENT[pageKey] || {};
+    renderByPageKey(pageKey, fallback);
+    showStatusBanner("⚠️ Contenu chargé en mode secours (hors ligne). Réessayez plus tard pour la version complète.");
   }
 }
